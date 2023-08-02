@@ -1,0 +1,180 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="activityVM"
+            type="com.veripark.interview.MainActivityViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/white"
+        >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/top_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="5dp"
+            />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/start_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="5dp"
+            />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="5dp"
+            />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="5dp"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/serviceNumberTextInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Service Number (10 digits)"
+            android:autofillHints="Item Description"
+            style="@style/PrimaryInputTextLayout"
+            app:errorTextColor="@color/red"
+            app:boxStrokeErrorColor="@color/red"
+            android:errorText='@{activityVM.serviceData.serviceNumberError}'
+            app:layout_constraintTop_toBottomOf="@id/top_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/serviceNumberText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="@style/PrimaryInputEditText"
+                android:text='@={activityVM.serviceData.serviceNumber}'
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/meterReadingTextInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Meter Reading"
+            android:autofillHints="Item Description"
+            style="@style/PrimaryInputTextLayout"
+            app:errorTextColor="@color/red"
+            app:boxStrokeErrorColor="@color/red"
+            android:errorText='@{activityVM.serviceData.meterReadingError}'
+            app:layout_constraintTop_toBottomOf="@id/serviceNumberTextInput"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/meterReadingText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="@style/PrimaryInputEditText"
+                android:inputType="number"
+                android:text='@={activityVM.serviceData.meterReading"}'
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonSubmit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:onClick='@{(view) -> activityVM.calculateConsumptionCost(view)}'
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/colorAccent"
+            app:layout_constraintTop_toBottomOf="@id/meterReadingTextInput"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            />
+
+        <TextView
+            android:id="@+id/textViewConsumptionCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text='@{"Consumption Cost: " + activityVM.serviceData.consCost}'
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/buttonSubmit"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/colorAccent"
+            android:onClick='@{(view) -> activityVM.saveReadingAndCost(view)}'
+            app:layout_constraintTop_toBottomOf="@id/textViewConsumptionCost"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            />
+
+        <LinearLayout
+            android:id="@+id/tableLable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            app:layout_constraintTop_toBottomOf="@id/buttonSave"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            >
+            <TextView
+                android:id="@+id/meterReading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Electric Reading"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+            <TextView
+                android:id="@+id/billAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Electric Bill"
+                android:textStyle="bold"
+                android:textAlignment="textEnd"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/tableLable"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
