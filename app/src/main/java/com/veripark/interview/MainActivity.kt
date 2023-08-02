@@ -13,10 +13,10 @@ class MainActivity : AppCompatActivity() {
     // Sample slab configuration
 
 
-    private lateinit var activityMainBinding: ActivityMainBinding;
+    private lateinit var activityMainBinding: ActivityMainBinding
 
 
-    val mainActivityViewModel: MainActivityViewModel by lazy {
+    private val mainActivityViewModel: MainActivityViewModel by lazy {
         ViewModelProvider(this)[MainActivityViewModel::class.java]
     }
 
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         activityMainBinding.activityVM = mainActivityViewModel
 
-        val historyAdapter: HistoryAdapter = HistoryAdapter(ArrayList<Pair<Int, Double>>())
+        val historyAdapter = HistoryAdapter(ArrayList())
         mainActivityViewModel.historyAdapter = historyAdapter
         activityMainBinding.historyRecyclerView.layoutManager = LinearLayoutManager(this)
         activityMainBinding.historyRecyclerView.adapter = historyAdapter
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
      * @param activity Activity context
      * @param color status bar color
      */
-    fun changeStatusBarColor(activity: Activity?, color: Int) {
+    private fun changeStatusBarColor(activity: Activity?, color: Int) {
         activity?.let { activeIt ->
             activeIt.window?.let { window ->
                 window.statusBarColor = color
