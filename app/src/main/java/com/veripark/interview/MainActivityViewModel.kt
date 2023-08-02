@@ -42,33 +42,29 @@ class MainActivityViewModel : ViewModel() {
      * @param view Button instance directly from xml.
      */
     fun calculateConsumptionCost(view: View) {
+        clearError()
         localServiceNumber = serviceData.serviceNumber
-        serviceData.meterReading.toIntOrNull()?.let {
-            localMeterReading = it
+        localMeterReading = if (serviceData.meterReading.isNotEmpty() && serviceData.meterReading.isNotBlank()){
+            serviceData.meterReading.toInt()
+        }else{
+            0
         }
         var actualMeterReading = localMeterReading
         var validated = true
         var Compvalidated = true
-
         if (localServiceNumber.length != 10) {
             serviceData.serviceNumberError = "Service Number Must Be 10 Digit."
             validated = false
         }
-
         if (localMeterReading <= 0) {
             serviceData.meterReadingError = "Invalid reading"
             validated = false
         }
-
         if (!validated) return
-
         if (previousReadingMap.contains(localServiceNumber)) {
             val readList = previousReadingMap[localServiceNumber]
             val previousReading = readList?.firstOrNull()?.first ?: 0
-
             actualMeterReading = localMeterReading.minus(previousReading)
-
-            // Validate the actual consumption
             if (actualMeterReading < 0) {
                 serviceData.meterReadingError =
                     "New reading must be higher or equal to previous reading"
@@ -76,10 +72,7 @@ class MainActivityViewModel : ViewModel() {
             }
         }
         if (!Compvalidated) return
-
-
         clearError()
-
         val consumptionCost = calculateCost(actualMeterReading)
         serviceData.consCost = String.format("%.2f", consumptionCost)
         localConsumptionCost = String.format("%.2f", consumptionCost).trim().toDouble()
